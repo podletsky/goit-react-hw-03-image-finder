@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
-import * as basicLightbox from 'basiclightbox';
-import GalleryItem from 'components/imageGalleryItem/ImageGalleryItem';
+import React from 'react';
+import styles from '../modal/Modal.module.css';
 
-class Modal extends Component {
-  handleClick = image => {
-    const instance = basicLightbox.create({ src: image });
-
-    instance.show();
-  };
-
-  render() {
-    const { image } = this.props;
-
-    return (
-      <GalleryItem image={image} onClick={() => this.handleClick(image)} />
-    );
-  }
-}
+const Modal = ({ image, closeModal }) => {
+  return (
+    <div className={styles.modalBackdrop} onClick={closeModal}>
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <img
+          className={styles.modalImage}
+          src={image.largeImageURL}
+          alt="Зображення"
+        />
+        {/* Додайте додаткові елементи модального вікна, якщо потрібно */}
+      </div>
+    </div>
+  );
+};
 
 export default Modal;

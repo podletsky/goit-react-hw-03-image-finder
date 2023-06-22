@@ -1,22 +1,30 @@
-// Modal.js
-import React, { Component } from 'react';
-import * as basicLightbox from 'basiclightbox';
-import GalleryItem from '../imageGalleryItem/ImageGalleryItem';
+// import React from 'react';
+// import styles from '../imageGallery/ImageGalery.module.css';
+// import ImageGalleryItem from '../imageGalleryItem/ImageGalleryItem.js';
 
-class Modal extends Component {
-  handleClick = image => {
-    const instance = basicLightbox.create({ src: image });
+// const ImageGallery = ({ images }) => {
+//   return (
+//     <ul className={styles.gallery}>
+//       {images.map(image => (
+//         <ImageGalleryItem key={image.id} image={image} />
+//       ))}
+//     </ul>
+//   );
+// };
 
-    instance.show();
-  };
+// export default ImageGallery;
+import React from 'react';
+import styles from '../imageGallery/ImageGalery.module.css';
+import ImageGalleryItem from '../imageGalleryItem/ImageGalleryItem.js';
 
-  render() {
-    const { image } = this.props;
+const ImageGallery = ({ images }) => {
+  return (
+    <ul className={styles.gallery}>
+      {images.map(image => (
+        <ImageGalleryItem key={image.id} image={image} />
+      ))}
+    </ul>
+  );
+};
 
-    return (
-      <GalleryItem image={image} onClick={() => this.handleClick(image)} />
-    );
-  }
-}
-
-export default Modal;
+export default ImageGallery;
