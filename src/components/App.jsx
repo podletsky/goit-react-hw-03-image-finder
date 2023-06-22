@@ -5,7 +5,7 @@ import ImageGallery from '../components/imageGallery/ImageGallery.js';
 import ButtonLoadMore from './button/Button';
 import CustomProgressBar from './loader/Loader.js';
 import Modal from './modal/Modal.js';
-
+import styles from '../components/App..module.css';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -60,7 +60,7 @@ class App extends Component {
     const { images, loading, selectedImage } = this.state;
 
     return (
-      <>
+      <div className={styles.container}>
         <Searchbar onSubmit={this.handleSearch} />
         <ImageGallery images={images} onClick={this.handleImageClick} />
         <ButtonLoadMore buttonLoadMore={this.handleLoadMore} />
@@ -68,7 +68,7 @@ class App extends Component {
         {selectedImage && (
           <Modal image={selectedImage} closeModal={this.handleCloseModal} />
         )}
-      </>
+      </div>
     );
   }
 }

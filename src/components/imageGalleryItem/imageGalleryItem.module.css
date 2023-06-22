@@ -1,9 +1,4 @@
-.gallery {
-  flex-wrap: wrap;
-  gap: 20px;
-}
-.container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
+.image {
+  width: 250px;
+  height: 200px;
 }

@@ -16,7 +16,12 @@ const GalleryItem = ({ image }) => {
   return (
     <>
       <li className={styles.item} onClick={openModal}>
-        <img src={image.webformatURL} alt="Зображення" width={250} />
+        <img
+          className={styles.image}
+          src={image.webformatURL}
+          alt="Зображення"
+          width={250}
+        />
       </li>
       {modalOpen && <Modal image={image} closeModal={closeModal} />}
     </>

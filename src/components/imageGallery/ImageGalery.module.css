@@ -1,0 +1,7 @@
+.gallery {
+  flex-wrap: wrap-reverse;
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: auto;
+}
