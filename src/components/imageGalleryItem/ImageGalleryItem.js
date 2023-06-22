@@ -20,7 +20,7 @@ const GalleryItem = ({ image }) => {
           className={styles.image}
           src={image.webformatURL}
           alt="Зображення"
-          width={250}
+          width={200}
         />
       </li>
       {modalOpen && <Modal image={image} closeModal={closeModal} />}

@@ -6,6 +6,7 @@ import ButtonLoadMore from './button/Button';
 import CustomProgressBar from './loader/Loader.js';
 import Modal from './modal/Modal.js';
 import styles from '../components/App..module.css';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +16,7 @@ class App extends Component {
       lastLoadedImages: [],
       loading: false,
       selectedImage: null,
+      showButton: false,
     };
   }
 
@@ -27,24 +29,36 @@ class App extends Component {
       searchValue,
       lastLoadedImages: images,
       loading: false,
+      showButton: true,
     });
   };
-
   handleLoadMore = async () => {
     const { searchValue, images } = this.state;
+    this.setState({ loading: true });
 
     if (images.length !== 0) {
-      this.setState({ loading: true });
       const response = await fetchPicture(
         searchValue,
         Math.ceil(images.length / 12) + 1
       );
       const newImages = response.hits;
 
-      this.setState(prevState => ({
-        images: [...prevState.images, ...newImages],
-        loading: false,
-      }));
+      this.setState(
+        prevState => ({
+          images: [...prevState.images, ...newImages],
+          loading: false,
+        }),
+        () => {
+          const galleryContainer = document.querySelector('.gallery');
+          if (galleryContainer) {
+            galleryContainer.scrollTo({
+              bottom:
+                galleryContainer.scrollHeight - galleryContainer.clientHeight,
+              behavior: 'smooth',
+            });
+          }
+        }
+      );
     }
   };
 
@@ -57,13 +71,15 @@ class App extends Component {
   };
 
   render() {
-    const { images, loading, selectedImage } = this.state;
+    const { images, loading, selectedImage, showButton } = this.state;
 
     return (
       <div className={styles.container}>
         <Searchbar onSubmit={this.handleSearch} />
         <ImageGallery images={images} onClick={this.handleImageClick} />
-        <ButtonLoadMore buttonLoadMore={this.handleLoadMore} />
+        {showButton && images.length !== 0 && (
+          <ButtonLoadMore buttonLoadMore={this.handleLoadMore} />
+        )}
         {loading && <CustomProgressBar />}
         {selectedImage && (
           <Modal image={selectedImage} closeModal={this.handleCloseModal} />
@@ -72,5 +88,4 @@ class App extends Component {
     );
   }
 }
-
 export { App };
