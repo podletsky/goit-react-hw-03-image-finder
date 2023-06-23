@@ -32,6 +32,7 @@ class App extends Component {
       showButton: true,
     });
   };
+
   handleLoadMore = async () => {
     const { searchValue, images } = this.state;
     this.setState({ loading: true });
@@ -45,18 +46,12 @@ class App extends Component {
 
       this.setState(
         prevState => ({
-          images: [...prevState.images, ...newImages],
+          images: [...prevState.images.reverse(), ...newImages],
           loading: false,
         }),
         () => {
-          const galleryContainer = document.querySelector('.gallery');
-          if (galleryContainer) {
-            galleryContainer.scrollTo({
-              bottom:
-                galleryContainer.scrollHeight - galleryContainer.clientHeight,
-              behavior: 'smooth',
-            });
-          }
+          const container = document.querySelector('.imageGallery');
+          container.scrollTop = container.scrollHeight - container.clientHeight;
         }
       );
     }
@@ -76,7 +71,9 @@ class App extends Component {
     return (
       <div className={styles.container}>
         <Searchbar onSubmit={this.handleSearch} />
-        <ImageGallery images={images} onClick={this.handleImageClick} />
+        <div className="imageGallery">
+          <ImageGallery images={images} onClick={this.handleImageClick} />
+        </div>
         {showButton && images.length !== 0 && (
           <ButtonLoadMore buttonLoadMore={this.handleLoadMore} />
         )}
@@ -88,4 +85,5 @@ class App extends Component {
     );
   }
 }
+
 export { App };

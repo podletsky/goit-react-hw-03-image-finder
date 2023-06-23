@@ -3,4 +3,15 @@
   padding: 5px;
   height: 130px;
   box-sizing: border-box;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+  transform: rotateX('angle');
+}
+.image:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+  transform: rotateX('angle');
+}
+.item {
+  transform: rotateX('angle');
 }

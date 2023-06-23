@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import styles from '../searchbar/SearchBar.module.css';
 import { FaSearch } from 'react-icons/fa';
-
+import PropTypes from 'prop-types';
 class Searchbar extends Component {
   constructor(props) {
     super(props);
@@ -42,5 +42,7 @@ class Searchbar extends Component {
     );
   }
 }
-
+Searchbar.protoType = {
+  onSubmit: PropTypes.func.isRequired,
+}.isRequired;
 export default Searchbar;
