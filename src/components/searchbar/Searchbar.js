@@ -4,12 +4,9 @@ import styles from '../searchbar/SearchBar.module.css';
 import { FaSearch } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 class Searchbar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      onSubmit: '',
-    };
-  }
+  state = {
+    onSubmit: '',
+  };
 
   handleInputChange = event => {
     this.setState({ onSubmit: event.target.value });
