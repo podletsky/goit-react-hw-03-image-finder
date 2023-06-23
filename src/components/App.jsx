@@ -11,7 +11,6 @@ class App extends Component {
     page: 1,
     images: [],
     searchValue: '',
-    lastLoadedImages: [],
     loading: false,
     showButton: true,
     error: '',
@@ -24,9 +23,9 @@ class App extends Component {
       try {
         const response = await fetchPicture(searchValue, page);
         const newImages = response.hits.map(
-          ({ id, tagss, webformatURL, largeImageURL }) => ({
+          ({ id, tags, webformatURL, largeImageURL }) => ({
             id,
-            tagss,
+            tags,
             webformatURL,
             largeImageURL,
           })
@@ -34,9 +33,8 @@ class App extends Component {
         if (newImages.length === 0) {
           return;
         }
-
         this.setState(prevState => ({
-          images: [...prevState.images, ...newImages],
+          images: [...newImages, ...prevState.images],
           loading: false,
         }));
       } catch (error) {
@@ -50,7 +48,6 @@ class App extends Component {
       page: 1,
       images: [],
       searchValue,
-      lastLoadedImages: [],
       showButton: true,
     });
   };
@@ -58,7 +55,6 @@ class App extends Component {
   handleLoadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
-      showButton: true,
     }));
   };
 
