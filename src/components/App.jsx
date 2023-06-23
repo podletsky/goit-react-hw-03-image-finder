@@ -2,71 +2,72 @@ import React, { Component } from 'react';
 import { fetchPicture } from '../api/Api.js';
 import Searchbar from './searchbar/Searchbar';
 import ImageGallery from '../components/imageGallery/ImageGallery.js';
-import ButtonLoadMore from './button/Button';
+import ButtonLoadMore from '../components/button/Button.js';
 import CustomProgressBar from './loader/Loader.js';
-import Modal from './modal/Modal.js';
 import styles from '../components/App..module.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      images: [],
-      searchValue: '',
-      lastLoadedImages: [],
-      loading: false,
-      selectedImage: null,
-      showButton: false,
-    };
-  }
+  state = {
+    page: 1,
+    images: [],
+    searchValue: '',
+    lastLoadedImages: [],
+    loading: false,
+    showButton: true,
+    error: '',
+  };
+
+  componentDidUpdate = async (_, prevState) => {
+    const { page, searchValue } = this.state;
+    if (page !== prevState.page || searchValue !== prevState.searchValue) {
+      this.setState({ loading: true });
+      try {
+        const response = await fetchPicture(searchValue, page);
+        const newImages = response.hits.map(
+          ({ id, tagss, webformatURL, largeImageURL }) => ({
+            id,
+            tagss,
+            webformatURL,
+            largeImageURL,
+          })
+        );
+        if (newImages.length === 0) {
+          return;
+        }
+
+        this.setState(prevState => ({
+          images: [...prevState.images, ...newImages],
+          loading: false,
+        }));
+      } catch (error) {
+        this.setState({ error: 'Щось пішло не так', loading: false });
+      }
+    }
+  };
 
   handleSearch = async searchValue => {
-    this.setState({ loading: true });
-    const response = await fetchPicture(searchValue);
-    const images = response.hits;
     this.setState({
-      images,
+      page: 1,
+      images: [],
       searchValue,
-      lastLoadedImages: images,
-      loading: false,
+      lastLoadedImages: [],
       showButton: true,
     });
   };
 
-  handleLoadMore = async () => {
-    const { searchValue, images } = this.state;
-    this.setState({ loading: true });
-
-    if (images.length !== 0) {
-      const response = await fetchPicture(
-        searchValue,
-        Math.ceil(images.length / 12) + 1
-      );
-      const newImages = response.hits;
-
-      this.setState(
-        prevState => ({
-          images: [...prevState.images.reverse(), ...newImages],
-          loading: false,
-        }),
-        () => {
-          const container = document.querySelector('.imageGallery');
-          container.scrollTop = container.scrollHeight - container.clientHeight;
-        }
-      );
-    }
+  handleLoadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+      showButton: true,
+    }));
   };
 
   handleImageClick = image => {
     this.setState({ selectedImage: image });
   };
 
-  handleCloseModal = () => {
-    this.setState({ selectedImage: null });
-  };
-
   render() {
-    const { images, loading, selectedImage, showButton } = this.state;
+    const { images, loading, showButton } = this.state;
 
     return (
       <div className={styles.container}>
@@ -78,9 +79,6 @@ class App extends Component {
           <ButtonLoadMore buttonLoadMore={this.handleLoadMore} />
         )}
         {loading && <CustomProgressBar />}
-        {selectedImage && (
-          <Modal image={selectedImage} closeModal={this.handleCloseModal} />
-        )}
       </div>
     );
   }

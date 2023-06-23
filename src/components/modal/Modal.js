@@ -11,7 +11,7 @@ class Modal extends Component {
   }
 
   handleKeyDown = e => {
-    if (e.keyCode === 27) {
+    if (e.сode === 'escape') {
       this.props.closeModal();
     }
   };
@@ -22,11 +22,7 @@ class Modal extends Component {
     return (
       <div className={styles.modalBackdrop} onClick={closeModal}>
         <div className={styles.modal} onClick={e => e.stopPropagation()}>
-          <img
-            className={styles.modalImage}
-            src={image.largeImageURL}
-            alt="Зображення"
-          />
+          <img className={styles.modalImage} src={image} alt="Зображення" />
         </div>
       </div>
     );

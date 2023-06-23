@@ -2,13 +2,11 @@ import React from 'react';
 import styles from '../imageGalleryItem/imageGalleryItem.module.css';
 import Modal from '../modal/Modal';
 import PropTypes from 'prop-types';
+
 class GalleryItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalOpen: false,
-    };
-  }
+  state = {
+    modalOpen: false,
+  };
 
   openModal = () => {
     this.setState({ modalOpen: true });
@@ -28,18 +26,22 @@ class GalleryItem extends React.Component {
           <img
             className={styles.image}
             src={image.webformatURL}
-            alt="Зображення"
+            alt="sdas"
             width={200}
           />
         </li>
-        {modalOpen && <Modal image={image} closeModal={this.closeModal} />}
+        {modalOpen && (
+          <Modal image={image.largeImageURL} closeModal={this.closeModal} />
+        )}
       </>
     );
   }
 }
-GalleryItem.propType = {
+
+GalleryItem.propTypes = {
   image: PropTypes.shape({
-    webformatURL: PropTypes.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
   }).isRequired,
 };
 
