@@ -12,7 +12,7 @@ class App extends Component {
     images: [],
     searchValue: '',
     loading: false,
-    showButton: true,
+    totalImages: 0,
     error: '',
   };
 
@@ -35,10 +35,12 @@ class App extends Component {
         }
         this.setState(prevState => ({
           images: [...newImages, ...prevState.images],
-          loading: false,
+          totalImages: response.totalHits,
         }));
       } catch (error) {
         this.setState({ error: 'Щось пішло не так', loading: false });
+      } finally {
+        this.setState({ loading: false });
       }
     }
   };
@@ -48,7 +50,7 @@ class App extends Component {
       page: 1,
       images: [],
       searchValue,
-      showButton: true,
+      totalImages: 0,
     });
   };
 
@@ -63,17 +65,15 @@ class App extends Component {
   };
 
   render() {
-    const { images, loading, showButton } = this.state;
-
+    const { images, loading, totalImages } = this.state;
+    const showButton = !loading && images.length !== totalImages;
     return (
       <div className={styles.container}>
         <Searchbar onSubmit={this.handleSearch} />
         <div className="imageGallery">
           <ImageGallery images={images} onClick={this.handleImageClick} />
         </div>
-        {showButton && images.length !== 0 && (
-          <ButtonLoadMore buttonLoadMore={this.handleLoadMore} />
-        )}
+        {showButton && <ButtonLoadMore buttonLoadMore={this.handleLoadMore} />}
         {loading && <CustomProgressBar />}
       </div>
     );
